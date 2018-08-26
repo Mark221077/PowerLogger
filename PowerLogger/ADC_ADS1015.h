@@ -11,7 +11,9 @@
 
 
 
+#define MAXALLOWEDREADING 1800    //at which value should we increase the pga
 
+#define MINALLOWEDREADING ( MAXALLOWEDREADING / 2 )     //at which value should we decrease the pga
 
 
 
@@ -72,6 +74,13 @@
 
 class ADC_ADS1015
 {
+
+private:
+	void decreasePGA();
+	void increasePGA();
+	int lastMax;
+	unsigned long resetTime;
+	uint16_t pgaConfig;
 
 public:
 

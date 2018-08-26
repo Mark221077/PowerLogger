@@ -16,10 +16,6 @@
 
 #define ZEROAMPOFFSET (-0.00095933)      //the average value of readings in volts
 
-#define MAXALLOWEDREADING 1800    //at which value should we increase the pga
-
-#define MINALLOWEDREADING ( MAXALLOWEDREADING / 2 )     //at which value should we decrease the pga
-
 #define TIMETORESET   5000        //the time offset to decrease the PGA
 
 
@@ -27,16 +23,11 @@
 class AmpReader
 {
 private:
-  int lastMax;
-  uint16_t pgaConfig;
-  unsigned long resetTime;
-  void decreasePGA();
-  void increasePGA();
+	ADC_ADS1015 adc;
 
 public:
   double readAmp();
 
-  ADC_ADS1015 adc;
   void init();
 };
 

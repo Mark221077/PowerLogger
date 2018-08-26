@@ -89,7 +89,30 @@ int ADC_ADS1015::readValue()          //returns bytes
     // negative number - extend the sign to 16th bit
     res |= 0xF000;
   }
-  return (int) res;     
+
+
+  int val = (int) res;
+
+  if (abs(val) > lastMax)       //if lastMax is low PGA will be lowered
+	  lastMax = abs(val);
+
+  if (val > MAXALLOWEDREADING) {    //if the new value is too high, increase PGA gain
+	  increasePGA();
+	  lastMax = 0;
+	  resetTime = millis();
+  }
+
+
+  if (millis() - resetTime > TIMETORESET) {       //check if in the last period was any high reading
+	  if (lastMax < MINALLOWEDREADING) {          //if there were no huge values decrease PGA
+		  decreasePGA();
+	  }
+
+	  resetTime = millis();
+	  lastMax = 0;
+  }
+
+  return val;     
 
 }
 
@@ -98,6 +121,56 @@ double ADC_ADS1015::readVolts()
 {
   return readValue() * voltPerBit;
 }
+
+
+
+//used to increase the PGA range in the adc
+//when the read value is above a certain limit: MAXALLOWEDREADING
+void ADC_ADS1015::increasePGA()
+{
+	//set the pgaConfig to the next level
+	switch (pgaConfig) {
+	case PGA02: pgaConfig = PGA05;
+		break;
+	case PGA05: pgaConfig = PGA1;
+		break;
+	case PGA1: pgaConfig = PGA2;
+		break;
+	case PGA2: pgaConfig = PGA4;
+		break;
+	case PGA4: pgaConfig = PGA6;
+		break;
+	case PGA6: return;
+	default: return;
+
+	}
+
+	startContinuous(MUXA0A1, pgaConfig, DR1600);  //reset the adc
+}
+
+//same as above, in the other way
+//the threshold is determined by MINALLOWEDREADING
+void ADC_ADS1015::decreasePGA()
+{
+	switch (pgaConfig) {
+	case PGA02: return;
+	case PGA05: pgaConfig = PGA02;
+		break;
+	case PGA1: pgaConfig = PGA05;
+		break;
+	case PGA2: pgaConfig = PGA1;
+		break;
+	case PGA4: pgaConfig = PGA2;
+		break;
+	case PGA6: pgaConfig = PGA4;
+		break;
+	default: return;
+
+	}
+
+	startContinuous(MUXA0A1, pgaConfig, DR1600);
+}
+
 
 
 ADC_ADS1015::ADC_ADS1015()
