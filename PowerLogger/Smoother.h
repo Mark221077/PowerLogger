@@ -1,5 +1,9 @@
 // Smoother.h
 
+#define NUMOFREADINGS 15
+
+
+
 #ifndef _SMOOTHER_h
 #define _SMOOTHER_h
 
@@ -9,11 +13,8 @@
   #include "WProgram.h"
 #endif
 
-#ifndef NUMOFREADINGS
 
-#define NUMOFREADINGS 15
 
-#endif // !NUMOFREADINGS
 
 
 class Smoother {

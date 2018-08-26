@@ -1,21 +1,5 @@
 
 
-//keep these before the includes
-
-//set these values by measuring
-//varies from board to board, even with different power supplies
-#define VOLTPERAMP  0.148730963       //volt per amp on the current sensor
-#define ZEROAMPOFFSET (-0.00095933)      //the average value of readings in volts
-#define PEAKVALUE 327         //the peak on the AC line
-#define FREQUENCY 50      //the frequency of the AC line in Hz
-
-
-//play with these values to increase performance
-//these are the default values in AmpReader.h
-#define MAXALLOWEDREADING 1800    //at which value should we increase the pga
-#define MINALLOWEDREADING ( MAXALLOWEDREADING / 2 )     //at which value should we decrease the pga
-#define TIMETORESET   5000        //the time offset to decrease the PGA
-
 
 #define NUMOFREADINGS 15        //for the smoother
 
