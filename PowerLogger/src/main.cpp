@@ -1,20 +1,52 @@
 #include <Arduino.h>
 
+#define USELCD 		1
+#define LOGWIFI 	1
+#define LOGSD		1
+
 #include <SPI.h>
 #include <RTClib.h>
-#include <SdFat.h>
 #include "Smoother.h"
 #include "VoltReader.h"
 #include "LCDControl.h"
 #include "AmpReader.h"
 #include "ADC_ADS1015.h"
 
+
+
+
+// code for SD card
+#ifdef LOGSD
+#include <SdFat.h>
+
+#define SDWRITERATE 2000    //every 2 seconds, try to increase if unstable
+#define SDFLUSHCOUNT  4     //how often flush to sd
+
+#define CSPIN 4       //for the SD card adapter
+
+//kept it from the sd card library
+#define error(msg) sd.errorHalt(F(msg))
+
+
+SdFat sd;             //for the logging on SD
+SdFile file;
+
+int writeNow = 0;         //counter for the flush to SD
+
+void logData();           //log to sd card
+
+unsigned long sdMillis = 0;
+
+#endif
+
+
+
+
+
 //in milliseconds
 #define SAMPLETIME  100
 #define LCDUPDATERATE 500
-#define SDWRITERATE 2000    //every 2 seconds, try to increase if unstable
 
-#define SDFLUSHCOUNT  4     //how often flush to sd
 
 #define HALFCYCLESTOAVERAGE   10      //after how many AC cycles average the readings, should be an odd number, more than 0
 
@@ -25,13 +57,11 @@
 
 #define POWERCORRECTION (1.06)   //correct the error of the calculation
 
-#define CSPIN 4       //for the SD card adapter
 
 #define ZEROCROSSPIN 3
 
 
-//kept it from the sd card library
-#define error(msg) sd.errorHalt(F(msg))
+
 
 
 
@@ -46,18 +76,12 @@ unsigned long last = 10000;     //to avoid false triggering of the zero cross in
 
 void zeroCrossDetected();     //zero cross ISR
 
-void logData();           //log to sd card
+
 
 void updateLCD();
 
 
-SdFat sd;             //for the logging on SD
-SdFile file;
-
-int writeNow = 0;         //counter for the flush to SD
-
-
-unsigned long sampleMillis = 0, sdMillis = 0, lcdMillis = 0;    //when to update
+unsigned long sampleMillis = 0, lcdMillis = 0;    //when to update
 
 double sumOfReadings = 0, powerConsumed = 0, currPower = 0;     //self explaining, see below
 long totalReadings = 0;
@@ -99,7 +123,7 @@ void setup()
 	voltReader.zeroCrossPW = sum / total;     //set the average width of the pulses
 
 
-
+#ifdef LOGSD
 	if (!sd.begin(CSPIN, SD_SCK_MHZ(16))) {     //init the sd
 		sd.initErrorHalt();
 		lcdControl.setLine1(F("SD Error"));
@@ -140,6 +164,9 @@ void setup()
 
 	lcdControl.setLine1(F("Logging to: "));
 	lcdControl.setLine2(String(fileName));    //msg to user
+
+#endif
+
 	delay(2000);
 
 
@@ -147,7 +174,10 @@ void setup()
 
 	sampleMillis = millis();
 	lcdMillis = millis();
+
+#ifdef LOGSD
 	sdMillis = millis();
+#endif
 }
 
 void loop()
@@ -195,6 +225,7 @@ void loop()
 		lcdMillis = millis();
 	}
 	//write to file
+#ifdef LOGSD
 	else if (millis() - sdMillis > SDWRITERATE) {
 		logData();
 		++writeNow;   //see below
@@ -209,6 +240,7 @@ void loop()
 			while (1);
 		}
 	}
+#endif
 }
 
 
@@ -221,12 +253,13 @@ void zeroCrossDetected() {
 	last = micros();
 }
 
-
+#ifdef LOGSD
 void logData() {
 	file.print(rtc.now().unixtime());
 	file.write(',');
 	file.println(powerConsumed * 1000, 6);      //write to file in Wh, for better accuracy at lower numbers
 }
+#endif
 
 
 
