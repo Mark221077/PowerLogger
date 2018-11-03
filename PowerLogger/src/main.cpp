@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #define USELCD 		1
-#define LOGWIFI 	1
+//#define LOGWIFI 	1
 #define LOGSD		1
 
 #include <SPI.h>
