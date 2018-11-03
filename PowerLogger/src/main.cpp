@@ -55,7 +55,7 @@ typedef union _doubleWrapper {
 #define LONGSIZE	4
 //same as above for long
 typedef union _longWrapper {
-	long num;
+	unsigned long num;
 	byte b[LONGSIZE];
 } LongWrapper;
 
@@ -322,7 +322,7 @@ void loop()
 		Serial.write(lWrapper.b, LONGSIZE);
 
 		//then send the unixtime
-		lWrapper.num = rtc.now().unixtime();
+		lWrapper.num = (unsigned long) rtc.now().unixtime();
 		Serial.write(lWrapper.b, LONGSIZE);
 
 		//lastly send the consumption
