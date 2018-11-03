@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
 #define USELCD 		1
-//#define LOGWIFI 	1
-#define LOGSD		1
+#define LOGWIFI 	1
+//#define LOGSD		1
 
 #include <SPI.h>
 #include <RTClib.h>
@@ -39,7 +39,31 @@ unsigned long sdMillis = 0;
 
 #endif
 
+#ifdef LOGWIFI
 
+#define STARTSEQ	(010101L)	//indicates the start of communication between the ESP and Arduino
+
+#define WIFISENDRATE	5000		//timeout for sending data over wifi
+unsigned long wifiMillis = 0;
+
+#define DOUBLESIZE	4
+//helper type to convert double to 4 bytes(double on atmega328 is 4 bytes)
+typedef union _doubleWrapper {
+	double num;
+	byte b[DOUBLESIZE];
+} DoubleWrapper;
+
+#define LONGSIZE	4
+//same as above for long
+typedef union _longWrapper {
+	long num;
+	byte b[LONGSIZE];
+} LongWrapper;
+
+DoubleWrapper dWrapper;
+LongWrapper lWrapper;
+
+#endif
 
 
 
@@ -167,6 +191,12 @@ void setup()
 
 #endif
 
+#ifdef LOGWIFI
+
+	Serial.begin(115200);		//ESP8266 connected through Serial port
+
+#endif
+
 	delay(2000);
 
 
@@ -178,6 +208,11 @@ void setup()
 #ifdef LOGSD
 	sdMillis = millis();
 #endif
+
+#ifdef LOGWIFI
+	wifiMillis = millis();
+#endif
+
 }
 
 void loop()
@@ -239,6 +274,24 @@ void loop()
 			error("write error");
 			while (1);
 		}
+	}
+#endif
+#ifdef LOGWIFI
+	else if(millis() - wifiMillis > WIFISENDRATE ) {
+
+		//first send the startSequence
+		lWrapper.num = STARTSEQ;
+		Serial.write(lWrapper.b, LONGSIZE);
+
+		//then send the unixtime
+		lWrapper.num = rtc.now().unixtime();
+		Serial.write(lWrapper.b, LONGSIZE);
+
+		//lastly send the consumption
+		dWrapper.num = powerConsumed;
+		Serial.write(dWrapper.b, DOUBLESIZE);
+
+		wifiMillis = millis();
 	}
 #endif
 }
