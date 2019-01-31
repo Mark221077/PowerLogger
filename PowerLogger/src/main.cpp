@@ -324,8 +324,8 @@ void loop()
 		Serial.write(lWrapper.b, LONGSIZE);
 
 		//then send the unixtime
-		lWrapper.num = (unsigned long) rtc.now().unixtime();
-		Serial.write(lWrapper.b, LONGSIZE);
+//		lWrapper.num = (unsigned long) rtc.now().unixtime();
+//		Serial.write(lWrapper.b, LONGSIZE);
 
 		//lastly send the consumption
 		dWrapper.num = powerConsumed;
