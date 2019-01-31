@@ -295,6 +295,7 @@ void loop()
 		lcdMillis = millis();
 	}
 #endif
+
 #ifdef LOGSD
 	//write to file
 	else if (millis() - sdMillis > SDWRITERATE) {
@@ -314,6 +315,7 @@ void loop()
 		}
 	}
 #endif
+
 #ifdef LOGWIFI
 	else if(millis() - wifiMillis > WIFISENDRATE ) {
 

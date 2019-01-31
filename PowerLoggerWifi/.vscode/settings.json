@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Users\\Mark\\.platformio\\penv\\Scripts;C:\\Users\\Mark\\.platformio\\penv;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\MATLAB\\R2018b\\bin;C:\\MinGW\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\PuTTY\\;C:\\Users\\Mark\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Common Files\\Hilscher GmbH\\TLRDecode;C:\\Users\\Mark\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\MATLAB\\R2018b\\bin;C:\\MinGW\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\PuTTY\\;C:\\Users\\Mark\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Common Files\\Hilscher GmbH\\TLRDecode;C:\\Users\\Mark\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+        "PLATFORMIO_CALLER": "vscode"
+    }
+}
