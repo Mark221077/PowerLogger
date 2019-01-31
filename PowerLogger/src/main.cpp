@@ -4,8 +4,7 @@
 #define LOGWIFI 	1
 //#define LOGSD		1
 
-#include <SPI.h>
-#include <RTClib.h>
+
 
 #include "VoltReader.h"
 #include "AmpReader.h"
@@ -16,7 +15,11 @@
 
 // code for SD card
 #ifdef LOGSD
+#include <SPI.h>
+#include <RTClib.h>
 #include <SdFat.h>
+
+RTC_DS3231 rtc;           //control for the rtc module
 
 #define SDWRITERATE 2000    //every 2 seconds, try to increase if unstable
 #define SDFLUSHCOUNT  4     //how often flush to sd
@@ -108,7 +111,7 @@ unsigned long  lcdMillis = 0;
 //variables
 AmpReader ampreader;
 VoltReader voltReader;
-RTC_DS3231 rtc;           //control for the rtc module
+
 
 unsigned long last = 10000;     //to avoid false triggering of the zero cross interrupt
 
