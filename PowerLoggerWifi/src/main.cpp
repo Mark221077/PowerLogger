@@ -63,17 +63,18 @@ void loop()
             return;
         }
 
+/*
         //read the time
         lWrapper.num = 0L;
         Serial.readBytes(lWrapper.b, LONGSIZE);
         unsigned long time = lWrapper.num;
-
+*/
         //read the consumption data
         dWrapper.num = 0.0;
         Serial.readBytes(dWrapper.b, DOUBLESIZE);
         double data = dWrapper.num;
 
-        String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO + "&time=" + time + "&data=" + String(data, 10);
+        String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO + "&data=" + String(data, 10);
 
 
         HTTPClient http;
