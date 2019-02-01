@@ -10,12 +10,12 @@
 #define WIFISSID "PalMark_Network"
 #define WIFIPASSWORD "11235813"
 
-#define DOUBLESIZE 4
-//helper type to convert double to 4 bytes(double on atmega328 is 4 bytes)
-typedef union _doubleWrapper {
-    double num;
-    byte b[DOUBLESIZE];
-} DoubleWrapper;
+#define FLOATSIZE 4
+//helper type to convert float to 4 bytes(float on atmega328 is 4 bytes)
+typedef union _floatWrapper {
+    float num;
+    byte b[FLOATSIZE];
+} FloatWrapper;
 
 #define LONGSIZE 4
 //same as above for long
@@ -24,7 +24,7 @@ typedef union _longWrapper {
     byte b[LONGSIZE];
 } LongWrapper;
 
-DoubleWrapper dWrapper;
+FloatWrapper fWrapper;
 LongWrapper lWrapper;
 
 void setup()
@@ -70,9 +70,9 @@ void loop()
         unsigned long time = lWrapper.num;
 */
         //read the consumption data
-        dWrapper.num = 0.0;
-        Serial.readBytes(dWrapper.b, DOUBLESIZE);
-        double data = dWrapper.num;
+        fWrapper.num = 0.0;
+        Serial.readBytes(fWrapper.b, FLOATSIZE);
+        float data = fWrapper.num;
 
         String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO + "&data=" + String(data, 10);
 
