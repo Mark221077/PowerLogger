@@ -81,7 +81,7 @@ void loop()
 
         http.setTimeout(500);
 
-        http.begin("http://192.168.1.3/test1/index.php"); //Specify request destination
+        http.begin("http://192.168.1.3/powerlogger/log.php"); //Specify request destination
         http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
 
         int httpCode = http.POST(postData); //Send the request
