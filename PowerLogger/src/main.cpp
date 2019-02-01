@@ -48,12 +48,12 @@ unsigned long sdMillis = 0;
 #define WIFISENDRATE	5000		//timeout for sending data over wifi
 unsigned long wifiMillis = 0;
 
-#define DOUBLESIZE	4
-//helper type to convert double to 4 bytes(double on atmega328 is 4 bytes)
-typedef union _doubleWrapper {
-	double num;
-	byte b[DOUBLESIZE];
-} DoubleWrapper;
+#define FLOATSIZE	4
+//helper type to convert float to 4 bytes(float on atmega328 is 4 bytes)
+typedef union _floatWrapper {
+	float num;
+	byte b[FLOATSIZE];
+} FloatWrapper;
 
 #define LONGSIZE	4
 //same as above for long
@@ -62,7 +62,7 @@ typedef union _longWrapper {
 	byte b[LONGSIZE];
 } LongWrapper;
 
-DoubleWrapper dWrapper;
+FloatWrapper fWrapper;
 LongWrapper lWrapper;
 
 #endif
@@ -122,13 +122,13 @@ void zeroCrossDetected();     //zero cross ISR
 
 unsigned long sampleMillis = 0;    //when to update
 
-double sumOfReadings = 0, powerConsumed = 0, currPower = 0;     //self explaining, see below
+float sumOfReadings = 0, powerConsumed = 0, currPower = 0;     //self explaining, see below
 long totalReadings = 0;
 
 int halfCyclesCount = 0;
 long rmsReadingCount = 0;
 
-double rmsA = 0, readingA, readingV, rmsSum = 0, avgCurrent = 0, currentSum = 0;      //for calculating the RMS values
+float rmsA = 0, readingA, readingV, rmsSum = 0, avgCurrent = 0, currentSum = 0;      //for calculating the RMS values
 
 void setup()
 {
@@ -331,8 +331,8 @@ void loop()
 //		Serial.write(lWrapper.b, LONGSIZE);
 
 		//lastly send the consumption
-		dWrapper.num = powerConsumed;
-		Serial.write(dWrapper.b, DOUBLESIZE);
+		fWrapper.num = powerConsumed;
+		Serial.write(fWrapper.b, FLOATSIZE);
 
 		wifiMillis = millis();
 	}
