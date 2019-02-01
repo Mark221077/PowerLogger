@@ -292,7 +292,6 @@ void loop()
 	else if (millis() - lcdMillis > LCDUPDATERATE) {
 		rmsA = sqrt(rmsSum / rmsReadingCount);    //RMS current, because we have space on the LCD   :)
 		rmsSum = 0;
-		ampreader.averageOfReadings = currentSum / rmsReadingCount;
 		rmsReadingCount = 0;
 		updateLCD();
 		lcdMillis = millis();

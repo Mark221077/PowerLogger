@@ -10,7 +10,7 @@
 double AmpReader::readAmp()
 {
 	//substract the zero amp offset from the read value, and convert to amps
-	double val = adc.readVolts() / VOLTPERAMP  - averageOfReadings;
+	double val = adc.readVolts() / VOLTPERAMP;
 
 	return val;
 }

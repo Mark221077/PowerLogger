@@ -24,8 +24,6 @@ class AmpReader
 
 public:
 
-	double averageOfReadings = 0.0;
-
 	ADC_ADS1015 adc;
 	double readAmp();
 
