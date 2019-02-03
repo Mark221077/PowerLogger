@@ -178,6 +178,7 @@ void ADC_ADS1015::decreasePGA()
 ADC_ADS1015::ADC_ADS1015()
 {
 	Wire.begin();   //initiate Wire library
+	Wire.setClock(400000);		//set clock to fast, 400kHz mode
 }
 
 
