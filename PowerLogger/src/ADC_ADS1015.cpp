@@ -146,7 +146,7 @@ void ADC_ADS1015::increasePGA()
 
 	}
 
-	startContinuous(MUXA0A1, pgaConfig, DR1600);  //reset the adc
+	startContinuous(MUXA0A1, pgaConfig, DR3300);  //reset the adc
 }
 
 //same as above, in the other way
@@ -170,7 +170,7 @@ void ADC_ADS1015::decreasePGA()
 
 	}
 
-	startContinuous(MUXA0A1, pgaConfig, DR1600);
+	startContinuous(MUXA0A1, pgaConfig, DR3300);
 }
 
 
