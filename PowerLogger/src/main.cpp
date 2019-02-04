@@ -45,7 +45,7 @@ unsigned long sdMillis = 0;
 
 #define STARTSEQ	(010101L)	//indicates the start of communication between the ESP and Arduino
 
-#define WIFISENDRATE	5000		//timeout for sending data over wifi
+#define WIFISENDRATE	30000		//timeout for sending data over wifi
 unsigned long wifiMillis = 0;
 
 #include "wrapperUnions.h"
