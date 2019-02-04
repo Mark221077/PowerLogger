@@ -48,19 +48,7 @@ unsigned long sdMillis = 0;
 #define WIFISENDRATE	5000		//timeout for sending data over wifi
 unsigned long wifiMillis = 0;
 
-#define FLOATSIZE	4
-//helper type to convert float to 4 bytes(float on atmega328 is 4 bytes)
-typedef union _floatWrapper {
-	float num;
-	byte b[FLOATSIZE];
-} FloatWrapper;
-
-#define LONGSIZE	4
-//same as above for long
-typedef union _longWrapper {
-	unsigned long num;
-	byte b[LONGSIZE];
-} LongWrapper;
+#include "wrapperUnions.h"
 
 FloatWrapper fWrapper;
 LongWrapper lWrapper;
