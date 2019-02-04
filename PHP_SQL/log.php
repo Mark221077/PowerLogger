@@ -7,10 +7,11 @@ $dbname = "smart_home";
 
 
 
-if(isset($_POST['ip']) && isset($_POST['station']) && isset($_POST['data'])) {
+if(isset($_POST['ip']) && isset($_POST['station']) && isset($_POST['delta'])) {
     $ipaddr = $_POST['ip'];
-    $station = $_POST['station'];
-    $data = $_POST['data'];
+    $station = intval($_POST['station']);
+    $delta = floatval($_POST['delta']);
+
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -19,8 +20,20 @@ if(isset($_POST['ip']) && isset($_POST['station']) && isset($_POST['data'])) {
         exit();
     } 
 
+    $sql = "SELECT Consumption FROM PowerLogger ORDER BY ID DESC LIMIT 1";
 
-    $sql = "INSERT INTO PowerLogger (IP, StationNo, Consumption, TimePosted) VALUES ('$ipaddr', '$station', '$data', NOW())";
+    $prev = 0;
+
+    $result = $conn->query($sql);
+
+    if($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $prev = floatval($row["Consumption"]);
+    }
+
+    $consumption = $prev + $delta;
+
+    $sql = "INSERT INTO PowerLogger (IP, StationNo, Consumption, TimePosted) VALUES ('$ipaddr', '$station', '$consumption', NOW())";
 
 
     if ($conn->query($sql) === TRUE) {
