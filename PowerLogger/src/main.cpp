@@ -122,7 +122,7 @@ void zeroCrossDetected();     //zero cross ISR
 
 unsigned long sampleMillis = 0;    //when to update
 
-float sumOfReadings = 0, powerConsumed = 0, currPower = 0;     //self explaining, see below
+float sumOfReadings = 0, powerConsumed = 0, currPower = 0, lastSent = 0;     //self explaining, see below
 long totalReadings = 0;
 
 int halfCyclesCount = 0;
@@ -332,6 +332,14 @@ void loop()
 		//lastly send the consumption
 		fWrapper.num = powerConsumed;
 		Serial.write(fWrapper.b, FLOATSIZE);
+
+		//send the delta to allow power loss recovery
+
+		fWrapper.num = powerConsumed - lastSent; 		//calculate the delta
+		Serial.write(fWrapper.b, FLOATSIZE);
+
+		lastSent = powerConsumed;
+
 
 		wifiMillis = millis();
 	}
