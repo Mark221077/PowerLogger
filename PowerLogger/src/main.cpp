@@ -83,6 +83,7 @@ unsigned long  lcdMillis = 0;
 
 #define MINPERIODMILLIS   8000      //to avoid false trigger of zero cross pin, should be less than half the period of the AC line = 1/(2*f)*1000000 in micros
 
+#define LOWTHRESHOLD	0.4			//in watts, everything lower is 0. this is measured when no load is connected
 
 #define JOULETOKWH (2.77778e-7)
 
@@ -263,6 +264,10 @@ void loop()
 		#ifdef USELCD
 		smoother.makeReading(currPower);    //used for the lcd display
 		#endif
+
+		if(currPower < LOWTHRESHOLD) {
+			currPower = 0;
+		}
 
 		powerConsumed += currPower * (millis() - sampleMillis) / 1000.0 * JOULETOKWH;   //the consumed power is saved in kWh
 		sampleMillis = millis();
