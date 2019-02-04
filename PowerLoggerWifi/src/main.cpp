@@ -15,6 +15,10 @@
 FloatWrapper fWrapper;
 LongWrapper lWrapper;
 
+
+float sinceLastSuccess = 0.0;           //used to store the sum of deltas, when sending to DB failed
+
+
 void setup()
 {
     Serial.begin(115200); //begin serial
@@ -34,7 +38,11 @@ void setup()
     }
 
     //connected
+
+    sinceLastSuccess = 0.0;
 }
+
+
 
 void loop()
 {
@@ -54,11 +62,10 @@ void loop()
         //read the delta
         fWrapper.num = 0.0;
         Serial.readBytes(fWrapper.b, FLOATSIZE);
-        float delta = fWrapper.num;         //the difference between the last sent and the current
+        float delta = sinceLastSuccess + fWrapper.num;         //the difference between the last sent and the current
 
 
         String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO  + "&delta=" + String(delta, 10);
-
 
         HTTPClient http;
 
@@ -68,6 +75,17 @@ void loop()
         http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
 
         int httpCode = http.POST(postData); //Send the request
+
+        if(httpCode == 200 || httpCode == 201) {
+            //success
+            sinceLastSuccess = 0;
+        }
+        else {
+            //something failed
+            //store the deltas not sent
+            sinceLastSuccess = delta;
+        }
+
         String payload = http.getString(); //Get the response payload
 
         http.end(); //Close connection
