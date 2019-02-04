@@ -322,9 +322,6 @@ void loop()
 //		lWrapper.num = (unsigned long) rtc.now().unixtime();
 //		Serial.write(lWrapper.b, LONGSIZE);
 
-		//lastly send the consumption
-		fWrapper.num = powerConsumed;
-		Serial.write(fWrapper.b, FLOATSIZE);
 
 		//send the delta to allow power loss recovery
 

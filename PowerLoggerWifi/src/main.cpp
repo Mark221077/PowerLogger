@@ -51,23 +51,13 @@ void loop()
             return;
         }
 
-/*
-        //read the time
-        lWrapper.num = 0L;
-        Serial.readBytes(lWrapper.b, LONGSIZE);
-        unsigned long time = lWrapper.num;
-*/
-        //read the consumption data
-        fWrapper.num = 0.0;
-        Serial.readBytes(fWrapper.b, FLOATSIZE);
-        float data = fWrapper.num;          //the sum since the start
-
+        //read the delta
         fWrapper.num = 0.0;
         Serial.readBytes(fWrapper.b, FLOATSIZE);
         float delta = fWrapper.num;         //the difference between the last sent and the current
 
 
-        String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO + "&data=" + String(data, 10) + "&delta=" + String(delta, 10);
+        String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO  + "&delta=" + String(delta, 10);
 
 
         HTTPClient http;
