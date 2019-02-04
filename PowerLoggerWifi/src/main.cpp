@@ -72,9 +72,14 @@ void loop()
         //read the consumption data
         fWrapper.num = 0.0;
         Serial.readBytes(fWrapper.b, FLOATSIZE);
-        float data = fWrapper.num;
+        float data = fWrapper.num;          //the sum since the start
 
-        String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO + "&data=" + String(data, 10);
+        fWrapper.num = 0.0;
+        Serial.readBytes(fWrapper.b, FLOATSIZE);
+        float delta = fWrapper.num;         //the difference between the last sent and the current
+
+
+        String postData = "ip=" + WiFi.localIP().toString() + "&station=" + STATIONNO + "&data=" + String(data, 10) + "&delta=" + String(delta, 10);
 
 
         HTTPClient http;
