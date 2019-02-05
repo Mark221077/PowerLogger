@@ -73,8 +73,7 @@ void loop()
             http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
 
             httpCode = http.POST(postData);    //Send the request
-            String payload = http.getString(); //Get the response payload
-
+            
             http.end(); //Close connection
         }
 
