@@ -67,10 +67,12 @@ void loop()
             //connected to wifi
             HTTPClient http;
 
-            http.setTimeout(500);
 
             http.begin("http://192.168.1.3/powerlogger/log.php");                //Specify request destination
             http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
+
+
+            http.setTimeout(5000);
 
             httpCode = http.POST(postData);    //Send the request
             
