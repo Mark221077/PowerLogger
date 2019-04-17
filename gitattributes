@@ -1,2 +1,2 @@
-PowerLogger/lib/* linguist-vendored
-PowerLoggerWifi/lib/* linguist-vendored
+PowerLogger/lib/*  linguist-vendored=true
+PowerLoggerWifi/lib/*  linguist-vendored=true
