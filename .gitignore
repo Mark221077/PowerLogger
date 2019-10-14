@@ -7,3 +7,8 @@ PowerLoggerWifi/.pio
 PowerLoggerWifi/.pioenvs
 PowerLoggerWifi/.piolibdeps
 PowerLoggerWifi/.vscode
+
+Calibration/ADC_Calibration/.pio
+Calibration/ADC_Calibration/.pioenvs
+Calibration/ADC_Calibration/.piolibdeps
+Calibration/ADC_Calibration/.vscode
