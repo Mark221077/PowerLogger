@@ -1,4 +1,4 @@
-#include <Arduino.h>
+//#include <Arduino.h>
 
 //#define USELCD 		1
 #define LOGWIFI 	1
