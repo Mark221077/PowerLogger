@@ -1,44 +1,11 @@
 #include <Arduino.h>
-
-#define LOGWIFI 	1
-
 #include "VoltReader.h"
 #include "AmpReader.h"
 
 
-#ifdef LOGWIFI
-
-#define STARTSEQ	(010101L)	//indicates the start of communication between the ESP and Arduino
 
 #define WIFISENDRATE	5000		//timeout for sending data over wifi
 unsigned long wifiMillis = 0;
-
-#define FLOATSIZE	4
-//helper type to convert float to 4 bytes(float on atmega328 is 4 bytes)
-typedef union _floatWrapper {
-	float num;
-	byte b[FLOATSIZE];
-} FloatWrapper;
-
-#define LONGSIZE	4
-//same as above for long
-typedef union _longWrapper {
-	unsigned long num;
-	byte b[LONGSIZE];
-} LongWrapper;
-
-FloatWrapper fWrapper;
-LongWrapper lWrapper;
-
-#endif
-
-
-
-
-
-//in milliseconds
-#define SAMPLETIME  100
-
 
 
 #define HALFCYCLESTOAVERAGE   10      //after how many AC cycles average the readings, should be an odd number, more than 0
@@ -75,16 +42,11 @@ float rmsA = 0, readingA, readingV, rmsSum = 0, avgCurrent = 0, currentSum = 0; 
 void setup()
 {
 	pinMode(ZEROCROSSPIN, INPUT);
-
-
 	ampreader.init();         //initiate the ampreader and lcd
 
 
 	//measure zero cross pulse width
-	while (pulseIn(ZEROCROSSPIN, HIGH) == 0) {   //wait till AC is connected
-		//if lcd connected msg to user, otherwise just wait
-	}
-
+	while (pulseIn(ZEROCROSSPIN, HIGH) == 0) { }   //wait till AC is connected
 
 	unsigned long sum = 0;
 	int total = 1000;
@@ -101,23 +63,13 @@ void setup()
 
 	voltReader.zeroCrossPW = sum / total;     //set the average width of the pulses
 
-
-
-#ifdef LOGWIFI
-	Serial.begin(115200);		//ESP8266 connected through Serial port
-#endif
-
-	delay(2000);
-
+	//TODO: connect to wifi and server
 
 	attachInterrupt(digitalPinToInterrupt(ZEROCROSSPIN), zeroCrossDetected, RISING);    //attach the interrupt
 
 	sampleMillis = millis();
 
-
-#ifdef LOGWIFI
 	wifiMillis = millis();
-#endif
 
 }
 
@@ -158,24 +110,10 @@ void loop()
 
 	//all these take long, so only one of them is done in one loop
 
-#ifdef LOGWIFI
 	if(millis() - wifiMillis > WIFISENDRATE ) {
-
-		//first send the startSequence
-		lWrapper.num = STARTSEQ;
-		Serial.write(lWrapper.b, LONGSIZE);
-
-		//then send the unixtime
-//		lWrapper.num = (unsigned long) rtc.now().unixtime();
-//		Serial.write(lWrapper.b, LONGSIZE);
-
-		//lastly send the consumption
-		fWrapper.num = powerConsumed;
-		Serial.write(fWrapper.b, FLOATSIZE);
-
+		//TODO: send data to server
 		wifiMillis = millis();
 	}
-#endif
 }
 
 
