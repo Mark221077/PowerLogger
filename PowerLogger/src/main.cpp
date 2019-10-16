@@ -97,9 +97,6 @@ void loop()
 		//so the average would be negative, but in the real world its always positive
 		currPower = abs(sumOfReadings / totalReadings);
 
-		#ifdef USELCD
-		smoother.makeReading(currPower);    //used for the lcd display
-		#endif
 
 		powerConsumed += currPower * (millis() - sampleMillis) / 1000.0 * JOULETOKWH;   //the consumed power is saved in kWh
 		sampleMillis = millis();

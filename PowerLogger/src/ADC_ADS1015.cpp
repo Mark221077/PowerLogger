@@ -34,7 +34,7 @@ static uint16_t readRegister(uint8_t i2cAddress, uint8_t reg) {
 static uint16_t readLastRegister(uint8_t i2cAddress) {
 	Wire.requestFrom(i2cAddress, (uint8_t)2);     //we want to read 2 8bit values
 
-	return ((Wire.read() << 8) | Wire.read());      //combine the two 8bit values into 16bit
+	return (uint16_t)(Wire.read() << 8) | (uint16_t)Wire.read();      //combine the two 8bit values into 16bit
 }
 
 
@@ -80,7 +80,7 @@ void ADC_ADS1015::startContinuous(uint16_t mux, uint16_t pga, uint16_t dr)    //
 	writeRegister(I2CADDR, CONVERSIONREGISTER, 0);        //set up the fast reading using readLastRegister()
 }
 
-int ADC_ADS1015::readValue()          //returns bytes
+int16_t ADC_ADS1015::readValue()          //returns bytes
 {
 	uint16_t res = readLastRegister(I2CADDR) >> 4;    //ignore the last 4 bits
 
@@ -91,7 +91,7 @@ int ADC_ADS1015::readValue()          //returns bytes
 	}
 
 
-	int val = (int)res;
+	int16_t val = (int16_t)res;
 
 	if (abs(val) > lastMax)       //if lastMax is low PGA will be lowered
 		lastMax = abs(val);

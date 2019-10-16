@@ -78,7 +78,7 @@ class ADC_ADS1015
 private:
 	void decreasePGA();
 	void increasePGA();
-	int lastMax;
+	int16_t lastMax;
 	unsigned long resetTime;
 	uint16_t pgaConfig = PGA02;
 
@@ -91,7 +91,7 @@ public:
 
 	void startContinuous(uint16_t mux, uint16_t pga, uint16_t dataRate);    //starts the adc in continuous mode
 
-	int readValue();      //returns the reading in bytes
+	int16_t readValue();      //returns the reading in bytes
 
 	double readVolts();     //returns the reading in volts
 };
