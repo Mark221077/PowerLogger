@@ -4,7 +4,7 @@
 #define _VOLTREADER_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
+#include "Arduino.h"
 #else
 #include "WProgram.h"
 #endif
@@ -22,14 +22,13 @@
 class VoltReader
 {
 private:
-	long zeroCrossT = 0;
-	boolean skipNow = false;
-	int lastVoltage = 0;        //default value, not yet set
+	unsigned long zeroCrossT = 0;
+	boolean skipNow = false;	//skip every second zero cross
 
 public:
 	int getReading();         //returns the current votlage level
 	void zeroCrossDetected();     //call this method when zero crossing is detected
-	int zeroCrossPW = 540;
+	int zeroCrossPW = 540;		//in microseconds
 };
 
 #endif
