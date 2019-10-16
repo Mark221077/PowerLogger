@@ -7,10 +7,10 @@
 // MAGIC = 2*pi*f/1000000  - where f=50Hz and 1000000 converts microseconds to seconds
 #define MAGIC 0.000314159265358979323846264338327950288419716939937510582
 
-int VoltReader::getReading()
+double VoltReader::getReading()
 {
   //the current voltage on AC line
-  return  (int) PEAKVALUE * sin(MAGIC * (micros() - zeroCrossT));
+  return  (double) (PEAKVALUE * sin(MAGIC * (micros() - zeroCrossT)));
 }
 
 void VoltReader::zeroCrossDetected()

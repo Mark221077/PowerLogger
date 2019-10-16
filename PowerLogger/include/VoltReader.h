@@ -23,12 +23,12 @@ class VoltReader
 {
 private:
 	unsigned long zeroCrossT = 0;
-	boolean skipNow = false;	//skip every second zero cross
+	bool skipNow = false;	//skip every second zero cross
 
 public:
-	int getReading();         //returns the current votlage level
+	double getReading();         //returns the current votlage level
 	void zeroCrossDetected();     //call this method when zero crossing is detected
-	int zeroCrossPW = 540;		//in microseconds
+	uint16_t zeroCrossPW = 540;		//in microseconds
 };
 
 #endif
